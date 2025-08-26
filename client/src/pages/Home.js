@@ -10,55 +10,41 @@ const Home = () => {
 
   return (
     <div className="pt-16 lg:pt-20">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-satwa-50 to-satwa-100 overflow-hidden">
+      {/* Hero Section - Minimalist Opulent */}
+      <section className="relative hero-dark overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="text-4xl lg:text-6xl font-serif font-bold text-gray-900 leading-tight">
-                Discover Timeless
-                <span className="text-gradient block">Elegance</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Copy */}
+            <div className="lg:col-span-6 space-y-8">
+              <h1 className="text-4xl lg:text-6xl font-serif font-bold text-linen leading-tight">
+                Timeless Luxury
+                <span className="block" style={{color:'#C9B07A'}}>Diamond Elegance</span>
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                Explore our curated collection of premium jewellery pieces. Each item tells a story 
-                of craftsmanship, beauty, and enduring style.
+              <p className="text-xl text-linen/80 leading-relaxed max-w-xl">
+                Discover the pinnacle of craftsmanship with our signature diamond necklace collection.
+                Minimalist. Opulent. Unmistakably Satwa.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/shop" className="btn-primary inline-flex items-center justify-center">
-                  Shop Now
+              <div className="flex flex-col sm:flex-row gap-5">
+                <Link to="/shop" className="btn-gold inline-flex items-center justify-center">
+                  Shop Collection
                   <FiArrowRight className="ml-2 w-5 h-5" />
                 </Link>
-                <Link to="/about" className="btn-secondary inline-flex items-center justify-center">
-                  Learn More
+                <Link to="/about" className="btn-gold-outline inline-flex items-center justify-center">
+                  Our Story
                 </Link>
               </div>
             </div>
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <img
-                    src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=500&fit=crop"
-                    alt="Elegant Jewellery"
-                    className="w-full h-64 object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=300&fit=crop"
-                    alt="Diamond Collection"
-                    className="w-full h-48 object-cover rounded-lg shadow-lg"
-                  />
-                </div>
-                <div className="space-y-4 pt-8">
-                  <img
-                    src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=300&fit=crop"
-                    alt="Gold Collection"
-                    className="w-full h-48 object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=500&fit=crop"
-                    alt="Pearl Collection"
-                    className="w-full h-64 object-cover rounded-lg shadow-lg"
-                  />
-                </div>
+
+            {/* Macro Product Image */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                <img
+                  src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1600&q=85"
+                  alt="Macro diamond necklace"
+                  className="w-full h-[420px] lg:h-[520px] object-cover object-center"
+                />
+                {/* Subtle gold border accent */}
+                <div className="pointer-events-none absolute inset-0" style={{boxShadow:'inset 0 0 0 2px rgba(201,176,122,0.25)'}}></div>
               </div>
             </div>
           </div>
@@ -70,31 +56,31 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-satwa-100 rounded-full flex items-center justify-center mx-auto">
-                <FiTruck className="w-8 h-8 text-satwa-600" />
+              <div className="w-16 h-16 bg-linen rounded-full flex items-center justify-center mx-auto">
+                <FiTruck className="w-8 h-8" style={{color:'#0D1B2A'}} />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Free Shipping</h3>
+              <h3 className="text-lg font-semibold text-midnight">Free Shipping</h3>
               <p className="text-gray-600">Free shipping on orders over $100</p>
             </div>
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-satwa-100 rounded-full flex items-center justify-center mx-auto">
-                <FiShield className="w-8 h-8 text-satwa-600" />
+              <div className="w-16 h-16 bg-linen rounded-full flex items-center justify-center mx-auto">
+                <FiShield className="w-8 h-8" style={{color:'#0D1B2A'}} />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Secure Payment</h3>
+              <h3 className="text-lg font-semibold text-midnight">Secure Payment</h3>
               <p className="text-gray-600">100% secure payment processing</p>
             </div>
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-satwa-100 rounded-full flex items-center justify-center mx-auto">
-                <FiRefreshCw className="w-8 h-8 text-satwa-600" />
+              <div className="w-16 h-16 bg-linen rounded-full flex items-center justify-center mx-auto">
+                <FiRefreshCw className="w-8 h-8" style={{color:'#0D1B2A'}} />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Easy Returns</h3>
+              <h3 className="text-lg font-semibold text-midnight">Easy Returns</h3>
               <p className="text-gray-600">30-day return policy</p>
             </div>
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-satwa-100 rounded-full flex items-center justify-center mx-auto">
-                <FiHeadphones className="w-8 h-8 text-satwa-600" />
+              <div className="w-16 h-16 bg-linen rounded-full flex items-center justify-center mx-auto">
+                <FiHeadphones className="w-8 h-8" style={{color:'#0D1B2A'}} />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">24/7 Support</h3>
+              <h3 className="text-lg font-semibold text-midnight">24/7 Support</h3>
               <p className="text-gray-600">Round the clock customer support</p>
             </div>
           </div>
@@ -105,7 +91,7 @@ const Home = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-4">
               Shop by Category
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -120,17 +106,17 @@ const Home = () => {
                 to={`/shop?category=${category.id}`}
                 className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <div className="aspect-square bg-gradient-to-br from-satwa-100 to-satwa-200 flex items-center justify-center">
+                <div className="aspect-square bg-midnight flex items-center justify-center">
                   <div className="text-center space-y-2">
-                    <div className="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center mx-auto group-hover:bg-satwa-500 transition-colors duration-300">
-                      <span className="text-2xl font-bold text-satwa-600 group-hover:text-white transition-colors duration-300">
+                    <div className="w-16 h-16 bg-linen/90 rounded-full flex items-center justify-center mx-auto transition-colors duration-300" style={{border:'2px solid #C9B07A'}}>
+                      <span className="text-2xl font-bold" style={{color:'#0D1B2A'}}>
                         {category.name.charAt(0)}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-gray-900 group-hover:text-satwa-600 transition-colors duration-300">
+                    <h3 className="font-semibold text-linen group-hover:text-polishedGold transition-colors duration-300">
                       {category.name}
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-linen/70">
                       {category.count} items
                     </p>
                   </div>
@@ -145,7 +131,7 @@ const Home = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-4">
               Featured Collection
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -160,7 +146,7 @@ const Home = () => {
           </div>
           
           <div className="text-center mt-12">
-            <Link to="/shop" className="btn-primary inline-flex items-center">
+            <Link to="/shop" className="btn-gold inline-flex items-center">
               View All Products
               <FiArrowRight className="ml-2 w-5 h-5" />
             </Link>
@@ -172,7 +158,7 @@ const Home = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-4">
               Best Sellers
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -192,7 +178,7 @@ const Home = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-4">
               What Our Customers Say
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -235,7 +221,7 @@ const Home = () => {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                    <h4 className="font-semibold text-midnight">{testimonial.name}</h4>
                     <p className="text-sm text-gray-500">Verified Customer</p>
                   </div>
                 </div>
@@ -246,23 +232,23 @@ const Home = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-satwa-600">
+      <section className="py-16" style={{backgroundColor:'#0D1B2A'}}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-serif font-bold text-white mb-4">
+          <h2 className="text-3xl lg:text-4xl font-serif font-bold text-linen mb-4">
             Stay Updated
           </h2>
-          <p className="text-xl text-satwa-100 mb-8">
+          <p className="text-xl text-linen/80 mb-8">
             Subscribe to our newsletter for exclusive offers and new arrivals
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-polishedGold/60"
             />
             <button
               type="submit"
-              className="bg-white text-satwa-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors"
+              className="btn-gold"
             >
               Subscribe
             </button>

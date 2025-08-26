@@ -105,7 +105,7 @@ const Shop = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-2">
             Shop Jewellery
           </h1>
           {searchQuery && (
@@ -125,10 +125,10 @@ const Shop = () => {
           <div className="lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+                <h3 className="text-lg font-semibold text-midnight">Filters</h3>
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="lg:hidden"
+                  className="lg:hidden text-midnight"
                 >
                   {isFilterOpen ? <FiChevronUp className="w-5 h-5" /> : <FiChevronDown className="w-5 h-5" />}
                 </button>
@@ -137,7 +137,7 @@ const Shop = () => {
               <div className={`space-y-6 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
                 {/* Categories */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Categories</h4>
+                  <h4 className="font-medium text-midnight mb-3">Categories</h4>
                   <div className="space-y-2">
                     {categories.slice(1).map((category) => (
                       <label key={category.id} className="flex items-center space-x-2">
@@ -145,7 +145,7 @@ const Shop = () => {
                           type="checkbox"
                           checked={selectedCategories.includes(category.id)}
                           onChange={() => handleCategoryToggle(category.id)}
-                          className="rounded border-gray-300 text-satwa-600 focus:ring-satwa-500"
+                          className="rounded border-gray-300 text-polishedGold focus:ring-polishedGold"
                         />
                         <span className="text-sm text-gray-700 capitalize">
                           {category.name} ({category.count})
@@ -157,7 +157,7 @@ const Shop = () => {
 
                 {/* Materials */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Materials</h4>
+                  <h4 className="font-medium text-midnight mb-3">Materials</h4>
                   <div className="space-y-2">
                     {materials.map((material) => (
                       <label key={material} className="flex items-center space-x-2">
@@ -165,7 +165,7 @@ const Shop = () => {
                           type="checkbox"
                           checked={selectedMaterials.includes(material)}
                           onChange={() => handleMaterialToggle(material)}
-                          className="rounded border-gray-300 text-satwa-600 focus:ring-satwa-500"
+                          className="rounded border-gray-300 text-polishedGold focus:ring-polishedGold"
                         />
                         <span className="text-sm text-gray-700">{material}</span>
                       </label>
@@ -175,7 +175,7 @@ const Shop = () => {
 
                 {/* Price Range */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Price Range</h4>
+                  <h4 className="font-medium text-midnight mb-3">Price Range</h4>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-2">
                       <span className="text-sm text-gray-600">$0</span>
@@ -185,7 +185,7 @@ const Shop = () => {
                         max="2000"
                         value={priceRange[1]}
                         onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                        className="flex-1"
+                        className="flex-1 accent-polishedGold"
                       />
                       <span className="text-sm text-gray-600">$2000</span>
                     </div>
@@ -198,7 +198,7 @@ const Shop = () => {
                 {/* Clear Filters */}
                 <button
                   onClick={clearFilters}
-                  className="w-full text-sm text-satwa-600 hover:text-satwa-700 font-medium"
+                  className="w-full text-sm text-midnight font-medium border border-polishedGold rounded-lg py-2 hover:bg-polishedGold hover:text-midnight transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -224,7 +224,7 @@ const Shop = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-satwa-500"
+                      className="text-sm border border-polishedGold/60 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-polishedGold"
                     >
                       <option value="featured">Featured</option>
                       <option value="price-low">Price: Low to High</option>
@@ -236,16 +236,16 @@ const Shop = () => {
                   </div>
 
                   {/* View Mode */}
-                  <div className="flex items-center space-x-1 border border-gray-300 rounded-lg p-1">
+                  <div className="flex items-center space-x-1 border border-polishedGold/60 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded ${viewMode === 'grid' ? 'bg-satwa-500 text-white' : 'text-gray-600 hover:text-satwa-500'}`}
+                      className={`p-2 rounded ${viewMode === 'grid' ? 'bg-polishedGold text-midnight' : 'text-gray-600 hover:text-polishedGold'}`}
                     >
                       <FiGrid className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 rounded ${viewMode === 'list' ? 'bg-satwa-500 text-white' : 'text-gray-600 hover:text-satwa-500'}`}
+                      className={`p-2 rounded ${viewMode === 'list' ? 'bg-polishedGold text-midnight' : 'text-gray-600 hover:text-polishedGold'}`}
                     >
                       <FiList className="w-4 h-4" />
                     </button>
@@ -276,7 +276,7 @@ const Shop = () => {
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="btn-primary"
+                  className="btn-gold"
                 >
                   Clear Filters
                 </button>

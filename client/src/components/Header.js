@@ -39,29 +39,29 @@ const Header = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
+      isScrolled ? 'bg-midnight shadow-lg' : 'bg-midnight/95 backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <h1 className="text-2xl lg:text-3xl font-serif font-bold text-gradient">
+            <h1 className="text-2xl lg:text-3xl font-serif font-bold" style={{color:'#C9B07A'}}>
               Satwa
             </h1>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-satwa-500 transition-colors font-medium">
+            <Link to="/" className="text-linen/90 hover:text-polishedGold transition-colors font-medium">
               Home
             </Link>
-            <Link to="/shop" className="text-gray-700 hover:text-satwa-500 transition-colors font-medium">
+            <Link to="/shop" className="text-linen/90 hover:text-polishedGold transition-colors font-medium">
               Shop
             </Link>
-            <Link to="/about" className="text-gray-700 hover:text-satwa-500 transition-colors font-medium">
+            <Link to="/about" className="text-linen/90 hover:text-polishedGold transition-colors font-medium">
               About
             </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-satwa-500 transition-colors font-medium">
+            <Link to="/contact" className="text-linen/90 hover:text-polishedGold transition-colors font-medium">
               Contact
             </Link>
           </nav>
@@ -75,28 +75,28 @@ const Header = () => {
                   placeholder="Search for jewellery..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-satwa-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-linen/20 bg-midnight/60 text-linen placeholder:text-linen/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-polishedGold focus:border-transparent"
                 />
-                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-linen/60" />
               </div>
             </form>
           </div>
 
           {/* Desktop Icons */}
           <div className="hidden lg:flex items-center space-x-6">
-            <Link to="/wishlist" className="relative text-gray-700 hover:text-satwa-500 transition-colors">
+            <Link to="/wishlist" className="relative text-linen/90 hover:text-polishedGold transition-colors">
               <FiHeart className="w-6 h-6" />
               {getWishlistCount() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-satwa-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-polishedGold text-midnight text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {getWishlistCount()}
                 </span>
               )}
             </Link>
             
-            <Link to="/cart" className="relative text-gray-700 hover:text-satwa-500 transition-colors">
+            <Link to="/cart" className="relative text-linen/90 hover:text-polishedGold transition-colors">
               <FiShoppingCart className="w-6 h-6" />
               {getCartCount() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-satwa-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-polishedGold text-midnight text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {getCartCount()}
                 </span>
               )}
@@ -104,24 +104,24 @@ const Header = () => {
 
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="flex items-center space-x-2 text-gray-700 hover:text-satwa-500 transition-colors">
+                <button className="flex items-center space-x-2 text-linen/90 hover:text-polishedGold transition-colors">
                   <FiUser className="w-6 h-6" />
                   <span className="font-medium">{user?.name || 'User'}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                <div className="absolute right-0 mt-2 w-48 bg-midnight rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-linen/10">
+                  <Link to="/profile" className="block px-4 py-2 text-linen/90 hover:text-polishedGold">
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50"
+                    className="block w-full text-left px-4 py-2 text-linen/90 hover:text-polishedGold"
                   >
                     Logout
                   </button>
                 </div>
               </div>
             ) : (
-              <Link to="/login" className="text-gray-700 hover:text-satwa-500 transition-colors font-medium">
+              <Link to="/login" className="text-linen/90 hover:text-polishedGold transition-colors font-medium">
                 Login
               </Link>
             )}
@@ -130,7 +130,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden text-gray-700 hover:text-satwa-500 transition-colors"
+            className="lg:hidden text-linen/90 hover:text-polishedGold transition-colors"
           >
             {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
           </button>
@@ -145,9 +145,9 @@ const Header = () => {
                 placeholder="Search for jewellery..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-satwa-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-linen/20 bg-midnight/60 text-linen placeholder:text-linen/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-polishedGold focus:border-transparent"
               />
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-linen/60" />
             </div>
           </form>
         </div>
@@ -155,48 +155,48 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200">
+        <div className="lg:hidden bg-midnight border-t border-linen/10">
           <div className="px-4 py-6 space-y-4">
             <nav className="space-y-4">
               <Link
                 to="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-700 hover:text-satwa-500 transition-colors font-medium"
+                className="block text-linen/90 hover:text-polishedGold transition-colors font-medium"
               >
                 Home
               </Link>
               <Link
                 to="/shop"
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-700 hover:text-satwa-500 transition-colors font-medium"
+                className="block text-linen/90 hover:text-polishedGold transition-colors font-medium"
               >
                 Shop
               </Link>
               <Link
                 to="/about"
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-700 hover:text-satwa-500 transition-colors font-medium"
+                className="block text-linen/90 hover:text-polishedGold transition-colors font-medium"
               >
                 About
               </Link>
               <Link
                 to="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-700 hover:text-satwa-500 transition-colors font-medium"
+                className="block text-linen/90 hover:text-polishedGold transition-colors font-medium"
               >
                 Contact
               </Link>
             </nav>
 
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-between pt-4 border-t border-linen/10">
               <Link
                 to="/wishlist"
                 onClick={() => setIsMenuOpen(false)}
-                className="relative text-gray-700 hover:text-satwa-500 transition-colors"
+                className="relative text-linen/90 hover:text-polishedGold transition-colors"
               >
                 <FiHeart className="w-6 h-6" />
                 {getWishlistCount() > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-satwa-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-polishedGold text-midnight text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {getWishlistCount()}
                   </span>
                 )}
@@ -205,11 +205,11 @@ const Header = () => {
               <Link
                 to="/cart"
                 onClick={() => setIsMenuOpen(false)}
-                className="relative text-gray-700 hover:text-satwa-500 transition-colors"
+                className="relative text-linen/90 hover:text-polishedGold transition-colors"
               >
                 <FiShoppingCart className="w-6 h-6" />
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-satwa-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-polishedGold text-midnight text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {getCartCount()}
                   </span>
                 )}
@@ -217,14 +217,14 @@ const Header = () => {
 
               {isAuthenticated ? (
                 <div className="flex items-center space-x-2">
-                  <FiUser className="w-6 h-6 text-gray-700" />
-                  <span className="font-medium text-gray-700">{user?.name || 'User'}</span>
+                  <FiUser className="w-6 h-6 text-linen/90" />
+                  <span className="font-medium text-linen/90">{user?.name || 'User'}</span>
                   <button
                     onClick={() => {
                       handleLogout();
                       setIsMenuOpen(false);
                     }}
-                    className="text-gray-700 hover:text-satwa-500 transition-colors"
+                    className="text-linen/90 hover:text-polishedGold transition-colors"
                   >
                     Logout
                   </button>
@@ -233,7 +233,7 @@ const Header = () => {
                 <Link
                   to="/login"
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-700 hover:text-satwa-500 transition-colors font-medium"
+                  className="text-linen/90 hover:text-polishedGold transition-colors font-medium"
                 >
                   Login
                 </Link>

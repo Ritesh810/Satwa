@@ -225,9 +225,9 @@ const ProductDetail = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
+                className={`flex-1 py-3 px-6 rounded-full font-medium transition-all duration-200 ${
                   product.inStock
-                    ? 'bg-satwa-500 text-white hover:bg-satwa-600 transform hover:scale-105'
+                    ? 'bg-polishedGold text-midnight hover:brightness-110 transform hover:scale-[1.02]'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
@@ -237,10 +237,10 @@ const ProductDetail = () => {
               
               <button
                 onClick={handleWishlistToggle}
-                className={`p-3 rounded-lg border-2 transition-all duration-200 ${
+                className={`p-3 rounded-full border-2 transition-all duration-200 ${
                   isInWishlist(product.id)
                     ? 'border-red-500 text-red-500 hover:bg-red-50'
-                    : 'border-gray-300 text-gray-600 hover:border-satwa-500 hover:text-satwa-500'
+                    : 'border-gray-300 text-gray-600 hover:border-polishedGold hover:text-polishedGold'
                 }`}
               >
                 <FiHeart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />

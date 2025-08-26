@@ -30,6 +30,14 @@
   .btn-secondary {
     @apply bg-white hover:bg-gray-50 text-satwa-600 border-2 border-satwa-500 font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-satwa-500 focus:ring-opacity-50;
   }
+
+  .btn-gold {
+    @apply bg-polishedGold text-midnight font-medium py-3 px-8 rounded-full tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-polishedGold/60;
+  }
+
+  .btn-gold-outline {
+    @apply bg-transparent text-polishedGold border border-polishedGold font-medium py-3 px-8 rounded-full tracking-wide transition-all duration-300 hover:bg-polishedGold hover:text-midnight focus:outline-none focus:ring-2 focus:ring-polishedGold/60;
+  }
   
   .card {
     @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
@@ -40,18 +48,26 @@
   }
   
   .gradient-bg {
-    background: linear-gradient(135deg, #fef7f0 0%, #fdecd8 100%);
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
   }
   
   .text-gradient {
-    background: linear-gradient(135deg, #f27522 0%, #f5934a 100%);
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  .hero-dark {
+    background-color: #0D1B2A;
+    background-image: radial-gradient(1000px 400px at 70% 20%, rgba(255,255,255,0.06), transparent 60%), radial-gradient(800px 300px at 20% 80%, rgba(255,255,255,0.04), transparent 60%);
+  }
 }
 
 @layer utilities {
+  .text-linen { color: #E0E1DD; }
+  .bg-midnight { background-color: #0D1B2A; }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

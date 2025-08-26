@@ -80,13 +80,13 @@ const ProductCard = ({ product }) => {
               e.preventDefault();
               handleAddToCart();
             }}
-            className="bg-white text-gray-800 p-3 rounded-full hover:bg-satwa-500 hover:text-white transition-colors duration-200"
+            className="bg-polishedGold text-midnight p-3 rounded-full hover:brightness-110 transition-colors duration-200"
           >
             <FiShoppingCart className="w-5 h-5" />
           </button>
           <Link
             to={`/product/${product.id}`}
-            className="bg-white text-gray-800 p-3 rounded-full hover:bg-satwa-500 hover:text-white transition-colors duration-200"
+            className="bg-polishedGold text-midnight p-3 rounded-full hover:brightness-110 transition-colors duration-200"
           >
             <FiEye className="w-5 h-5" />
           </Link>
@@ -102,7 +102,7 @@ const ProductCard = ({ product }) => {
 
         {/* Product Name */}
         <Link to={`/product/${product.id}`}>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-satwa-500 transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-polishedGold transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
@@ -145,9 +145,9 @@ const ProductCard = ({ product }) => {
         <button
           onClick={handleAddToCart}
           disabled={!product.inStock}
-          className={`w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 ${
+          className={`w-full py-2 px-4 rounded-full font-medium transition-all duration-200 ${
             product.inStock
-              ? 'bg-satwa-500 text-white hover:bg-satwa-600 transform hover:scale-105'
+              ? 'bg-polishedGold text-midnight hover:brightness-110 transform hover:scale-[1.02]'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

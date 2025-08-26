@@ -54,7 +54,7 @@ const Cart = () => {
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               Looks like you haven't added any items to your cart yet. Start shopping to discover our beautiful jewellery collection.
             </p>
-            <Link to="/shop" className="btn-primary inline-flex items-center">
+            <Link to="/shop" className="btn-gold inline-flex items-center">
               <FiArrowLeft className="mr-2 w-5 h-5" />
               Continue Shopping
             </Link>
@@ -186,7 +186,7 @@ const Cart = () => {
                 </div>
                 
                 {shipping > 0 && (
-                  <div className="text-sm text-satwa-600 bg-satwa-50 p-3 rounded-lg">
+                  <div className="text-sm text-midnight bg-linen p-3 rounded-lg" style={{border:'1px solid #C9B07A'}}>
                     Add ${formatPrice(100 - subtotal).replace('$', '')} more for free shipping
                   </div>
                 )}
@@ -202,7 +202,7 @@ const Cart = () => {
               {/* Checkout Button */}
               <Link
                 to="/checkout"
-                className="w-full mt-6 bg-satwa-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-satwa-600 transition-colors flex items-center justify-center"
+                className="w-full mt-6 btn-gold flex items-center justify-center"
               >
                 <FiLock className="mr-2 w-5 h-5" />
                 Proceed to Checkout
@@ -211,7 +211,7 @@ const Cart = () => {
               {/* Continue Shopping */}
               <Link
                 to="/shop"
-                className="w-full mt-4 text-satwa-600 border-2 border-satwa-500 py-3 px-6 rounded-lg font-medium hover:bg-satwa-50 transition-colors flex items-center justify-center"
+                className="w-full mt-4 btn-gold-outline flex items-center justify-center"
               >
                 <FiArrowLeft className="mr-2 w-5 h-5" />
                 Continue Shopping
@@ -239,7 +239,7 @@ const Cart = () => {
               <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
               <h3 className="font-semibold text-gray-900 mb-2">Recommended Product</h3>
               <p className="text-gray-600 text-sm mb-2">Discover more beautiful pieces</p>
-              <Link to="/shop" className="text-satwa-600 hover:text-satwa-700 font-medium">
+              <Link to="/shop" className="text-midnight" style={{color:'#0D1B2A'}}>
                 Shop Now →
               </Link>
             </div>

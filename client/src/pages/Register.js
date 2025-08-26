@@ -61,14 +61,14 @@ const Register = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <Link to="/" className="inline-block mb-8">
-            <h1 className="text-3xl font-serif font-bold text-gradient">
+            <h1 className="text-3xl font-serif font-bold" style={{color:'#C9B07A'}}>
               Satwa
             </h1>
           </Link>
           <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
           <p className="mt-2 text-sm text-gray-600">
             Or{' '}
-            <Link to="/login" className="font-medium text-satwa-600 hover:text-satwa-500">
+            <Link to="/login" className="font-medium" style={{color:'#C9B07A'}}>
               sign in to your existing account
             </Link>
           </p>
@@ -216,15 +216,15 @@ const Register = () => {
                 name="terms"
                 type="checkbox"
                 required
-                className="h-4 w-4 text-satwa-600 focus:ring-satwa-500 border-gray-300 rounded"
+                className="h-4 w-4 text-polishedGold focus:ring-polishedGold border-gray-300 rounded"
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
                 I agree to the{' '}
-                <a href="#" className="text-satwa-600 hover:text-satwa-500">
+                <a href="#" style={{color:'#C9B07A'}}>
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="#" className="text-satwa-600 hover:text-satwa-500">
+                <a href="#" style={{color:'#C9B07A'}}>
                   Privacy Policy
                 </a>
               </label>
@@ -234,11 +234,11 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn-gold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-midnight mr-2"></div>
                     Creating account...
                   </div>
                 ) : (

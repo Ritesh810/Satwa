@@ -21,7 +21,7 @@ root.render(
           success: {
             duration: 3000,
             iconTheme: {
-              primary: '#f27522',
+              primary: '#10B981',
               secondary: '#fff',
             },
           },

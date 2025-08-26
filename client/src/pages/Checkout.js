@@ -40,7 +40,7 @@ const Checkout = () => {
       <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
-          <Link to="/shop" className="btn-primary">Continue Shopping</Link>
+          <Link to="/shop" className="btn-gold">Continue Shopping</Link>
         </div>
       </div>
     );
@@ -177,11 +177,11 @@ const Checkout = () => {
             <button
               onClick={handlePlaceOrder}
               disabled={isProcessing}
-              className="w-full bg-satwa-500 text-white py-4 px-6 rounded-lg font-medium hover:bg-satwa-600 transition-colors flex items-center justify-center disabled:opacity-50"
+              className="w-full btn-gold flex items-center justify-center disabled:opacity-50"
             >
               {isProcessing ? (
                 <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-midnight mr-2"></div>
                   Processing...
                 </div>
               ) : (
@@ -194,7 +194,7 @@ const Checkout = () => {
 
             <Link
               to="/cart"
-              className="w-full text-satwa-600 border-2 border-satwa-500 py-3 px-6 rounded-lg font-medium hover:bg-satwa-50 transition-colors text-center block"
+              className="w-full btn-gold-outline text-center block"
             >
               Back to Cart
             </Link>
