@@ -1,0 +1,75 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useWishlist } from '../contexts/WishlistContext';
+import { FiHeart, FiShoppingCart, FiTrash2 } from 'react-icons/fi';
+import ProductCard from '../components/ProductCard';
+import toast from 'react-hot-toast';
+
+const Wishlist = () => {
+  const { items, removeFromWishlist, clearWishlist } = useWishlist();
+
+  const handleRemoveItem = (productId) => {
+    removeFromWishlist(productId);
+    toast.success('Removed from wishlist');
+  };
+
+  const handleClearWishlist = () => {
+    clearWishlist();
+    toast.success('Wishlist cleared');
+  };
+
+  if (items.length === 0) {
+    return (
+      <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <div className="text-gray-400 mb-6">
+              <FiHeart className="w-24 h-24 mx-auto" />
+            </div>
+            <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">
+              Your wishlist is empty
+            </h1>
+            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+              Start adding items to your wishlist to save them for later.
+            </p>
+            <Link to="/shop" className="btn-primary">
+              Start Shopping
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-2">
+              My Wishlist
+            </h1>
+            <p className="text-gray-600">
+              {items.length} item{items.length !== 1 ? 's' : ''} in your wishlist
+            </p>
+          </div>
+          <button
+            onClick={handleClearWishlist}
+            className="text-red-600 hover:text-red-700 font-medium"
+          >
+            Clear All
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {items.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Wishlist;
+
