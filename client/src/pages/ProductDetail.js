@@ -25,7 +25,7 @@ const ProductDetail = () => {
     return (
       <div className="pt-16 lg:pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-satwa-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-polishedGold mx-auto mb-4"></div>
           <p className="text-gray-600">Loading product...</p>
         </div>
       </div>
@@ -77,11 +77,11 @@ const ProductDetail = () => {
         {/* Breadcrumb */}
         <nav className="mb-8">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li><Link to="/" className="hover:text-satwa-500">Home</Link></li>
+            <li><Link to="/" className="hover:text-polishedGold">Home</Link></li>
             <li>/</li>
-            <li><Link to="/shop" className="hover:text-satwa-500">Shop</Link></li>
+            <li><Link to="/shop" className="hover:text-polishedGold">Shop</Link></li>
             <li>/</li>
-            <li><Link to={`/shop?category=${product.category}`} className="hover:text-satwa-500 capitalize">{product.category}</Link></li>
+            <li><Link to={`/shop?category=${product.category}`} className="hover:text-polishedGold capitalize">{product.category}</Link></li>
             <li>/</li>
             <li className="text-gray-900">{product.name}</li>
           </ol>
@@ -90,7 +90,7 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square bg-white rounded-xl overflow-hidden">
+            <div className="relative aspect-square bg-white rounded-xl overflow-hidden ring-1 ring-gray-200">
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -114,6 +114,13 @@ const ProductDetail = () => {
                   </button>
                 </>
               )}
+
+              {/* Discount badge */}
+              {discountPercentage > 0 && (
+                <span className="absolute top-4 left-4 text-sm font-bold px-2 py-1 rounded-full" style={{background:'#C9B07A', color:'#0D1B2A'}}>
+                  -{discountPercentage}%
+                </span>
+              )}
             </div>
 
             {/* Thumbnail images */}
@@ -124,7 +131,7 @@ const ProductDetail = () => {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index ? 'border-satwa-500' : 'border-gray-200'
+                      selectedImage === index ? 'border-polishedGold' : 'border-gray-200'
                     }`}
                   >
                     <img
@@ -141,7 +148,7 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-midnight mb-2">
                 {product.name}
               </h1>
               <p className="text-sm text-gray-500 uppercase tracking-wide mb-4">
@@ -168,7 +175,7 @@ const ProductDetail = () => {
 
             {/* Price */}
             <div className="flex items-center space-x-4">
-              <span className="text-3xl font-bold text-gray-900">
+              <span className="text-3xl font-bold text-midnight">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
@@ -176,7 +183,7 @@ const ProductDetail = () => {
                   <span className="text-xl text-gray-500 line-through">
                     {formatPrice(product.originalPrice)}
                   </span>
-                  <span className="bg-red-500 text-white text-sm font-bold px-2 py-1 rounded-full">
+                  <span className="text-sm font-bold px-2 py-1 rounded-full" style={{background:'#C9B07A', color:'#0D1B2A'}}>
                     -{discountPercentage}%
                   </span>
                 </>
@@ -185,19 +192,19 @@ const ProductDetail = () => {
 
             {/* Material */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Material</h3>
+              <h3 className="font-semibold text-midnight mb-2">Material</h3>
               <p className="text-gray-600">{product.material}</p>
             </div>
 
             {/* Description */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
+              <h3 className="font-semibold text-midnight mb-2">Description</h3>
               <p className="text-gray-600 leading-relaxed">{product.description}</p>
             </div>
 
             {/* Quantity */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Quantity</h3>
+              <h3 className="font-semibold text-midnight mb-2">Quantity</h3>
               <div className="flex items-center space-x-4">
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
@@ -248,17 +255,17 @@ const ProductDetail = () => {
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-200">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t" style={{borderColor:'rgba(201,176,122,0.3)'}}>
               <div className="flex items-center space-x-2">
-                <FiTruck className="w-5 h-5 text-satwa-500" />
+                <FiTruck className="w-5 h-5" style={{color:'#0D1B2A'}} />
                 <span className="text-sm text-gray-600">Free Shipping</span>
               </div>
               <div className="flex items-center space-x-2">
-                <FiShield className="w-5 h-5 text-satwa-500" />
+                <FiShield className="w-5 h-5" style={{color:'#0D1B2A'}} />
                 <span className="text-sm text-gray-600">Secure Payment</span>
               </div>
               <div className="flex items-center space-x-2">
-                <FiRefreshCw className="w-5 h-5 text-satwa-500" />
+                <FiRefreshCw className="w-5 h-5" style={{color:'#0D1B2A'}} />
                 <span className="text-sm text-gray-600">Easy Returns</span>
               </div>
             </div>
@@ -267,7 +274,7 @@ const ProductDetail = () => {
 
         {/* Tabs */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-16">
-          <div className="border-b border-gray-200 mb-6">
+          <div className="border-b mb-6" style={{borderColor:'rgba(201,176,122,0.3)'}}>
             <nav className="flex space-x-8">
               {[
                 { id: 'description', label: 'Description' },
@@ -279,8 +286,8 @@ const ProductDetail = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === tab.id
-                      ? 'border-satwa-500 text-satwa-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-polishedGold text-midnight'
+                      : 'border-transparent text-gray-500 hover:text-midnight hover:border-polishedGold/60'
                   }`}
                 >
                   {tab.label}
@@ -295,7 +302,7 @@ const ProductDetail = () => {
                 <p className="text-gray-600 leading-relaxed">{product.description}</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Features</h4>
+                    <h4 className="font-semibold text-midnight mb-2">Features</h4>
                     <ul className="space-y-1 text-gray-600">
                       <li>• Premium quality materials</li>
                       <li>• Expert craftsmanship</li>
@@ -304,7 +311,7 @@ const ProductDetail = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Care Instructions</h4>
+                    <h4 className="font-semibold text-midnight mb-2">Care Instructions</h4>
                     <ul className="space-y-1 text-gray-600">
                       <li>• Store in a cool, dry place</li>
                       <li>• Clean with a soft cloth</li>
@@ -320,7 +327,7 @@ const ProductDetail = () => {
               <div className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900">{product.rating}</div>
+                    <div className="text-3xl font-bold text-midnight">{product.rating}</div>
                     <div className="flex items-center justify-center space-x-1 my-2">
                       {[...Array(5)].map((_, i) => (
                         <FiStar
@@ -339,7 +346,7 @@ const ProductDetail = () => {
                 
                 <div className="space-y-4">
                   {[1, 2, 3].map((review) => (
-                    <div key={review} className="border-b border-gray-200 pb-4 last:border-b-0">
+                    <div key={review} className="border-b pb-4 last:border-b-0" style={{borderColor:'rgba(201,176,122,0.3)'}}>
                       <div className="flex items-center space-x-2 mb-2">
                         <div className="flex items-center space-x-1">
                           {[...Array(5)].map((_, i) => (
@@ -362,7 +369,7 @@ const ProductDetail = () => {
                           alt="Customer"
                           className="w-8 h-8 rounded-full"
                         />
-                        <span className="text-sm font-medium text-gray-900">Customer {review}</span>
+                        <span className="text-sm font-medium text-midnight">Customer {review}</span>
                       </div>
                     </div>
                   ))}
@@ -373,7 +380,7 @@ const ProductDetail = () => {
             {activeTab === 'shipping' && (
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Shipping Information</h4>
+                  <h4 className="font-semibold text-midnight mb-2">Shipping Information</h4>
                   <ul className="space-y-2 text-gray-600">
                     <li>• Free shipping on orders over $100</li>
                     <li>• Standard delivery: 3-5 business days</li>
@@ -383,7 +390,7 @@ const ProductDetail = () => {
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Return Policy</h4>
+                  <h4 className="font-semibold text-midnight mb-2">Return Policy</h4>
                   <ul className="space-y-2 text-gray-600">
                     <li>• 30-day return policy</li>
                     <li>• Items must be in original condition</li>
@@ -399,7 +406,7 @@ const ProductDetail = () => {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-8">
+            <h2 className="text-2xl font-serif font-bold text-midnight mb-8">
               Related Products
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

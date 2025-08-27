@@ -38,14 +38,14 @@ const ProductCard = ({ product }) => {
 
   return (
     <div
-      className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+      className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 hover:border-polishedGold/40 h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Discount Badge */}
       {discountPercentage > 0 && (
         <div className="absolute top-3 left-3 z-10">
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="text-xs font-bold px-2 py-1 rounded-full" style={{background:'#C9B07A', color:'#0D1B2A'}}>
             -{discountPercentage}%
           </span>
         </div>
@@ -94,7 +94,7 @@ const ProductCard = ({ product }) => {
       </Link>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className="p-4 flex-1 flex flex-col">
         {/* Category */}
         <p className="text-sm text-gray-500 uppercase tracking-wide mb-1">
           {product.category}
@@ -102,7 +102,7 @@ const ProductCard = ({ product }) => {
 
         {/* Product Name */}
         <Link to={`/product/${product.id}`}>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-polishedGold transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-polishedGold transition-colors line-clamp-2 min-h-[48px]">
             {product.name}
           </h3>
         </Link>
@@ -137,7 +137,7 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Material */}
-        <p className="text-sm text-gray-600 mb-3">
+        <p className="text-sm text-gray-600 mb-4">
           {product.material}
         </p>
 
@@ -145,7 +145,7 @@ const ProductCard = ({ product }) => {
         <button
           onClick={handleAddToCart}
           disabled={!product.inStock}
-          className={`w-full py-2 px-4 rounded-full font-medium transition-all duration-200 ${
+          className={`mt-auto w-full py-2 px-4 rounded-full font-medium transition-all duration-200 ${
             product.inStock
               ? 'bg-polishedGold text-midnight hover:brightness-110 transform hover:scale-[1.02]'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
