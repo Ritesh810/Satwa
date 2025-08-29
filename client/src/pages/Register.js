@@ -17,14 +17,36 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const checkPasswordStrength = (password) => {
+    let strength = 0;
+    
+    if (password.length >= 8) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+    
+    setPasswordStrength(strength);
+    return strength;
+  };
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear errors on change
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+    
+    // Check password strength
+    if (name === 'password') {
+      checkPasswordStrength(value);
+    }
   };
 
   const validateForm = () => {
@@ -133,12 +155,12 @@ const Register = () => {
                     required
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="input-field pl-10"
+                    className={`input-field pl-10 ${errors.firstName ? 'border-red-500 focus:ring-red-500' : ''}`}
                     placeholder="First name"
                   />
                 </div>
                 {errors.firstName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
                 )}
               </div>
 
@@ -158,12 +180,12 @@ const Register = () => {
                     required
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="input-field pl-10"
+                    className={`input-field pl-10 ${errors.lastName ? 'border-red-500 focus:ring-red-500' : ''}`}
                     placeholder="Last name"
                   />
                 </div>
                 {errors.lastName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
                 )}
               </div>
             </div>
@@ -184,12 +206,12 @@ const Register = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="input-field pl-10"
+                  className={`input-field pl-10 ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
                   placeholder="Enter your email"
                 />
               </div>
               {errors.email && (
-                <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
             </div>
 
@@ -209,7 +231,7 @@ const Register = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="input-field pl-10 pr-10"
+                  className={`input-field pl-10 pr-10 ${errors.password ? 'border-red-500 focus:ring-red-500' : ''}`}
                   placeholder="Create a password"
                 />
                 <button
@@ -225,7 +247,7 @@ const Register = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
             </div>
 
@@ -245,7 +267,14 @@ const Register = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="input-field pl-10 pr-10"
+                  className={`input-field pl-10 pr-10 ${
+                    formData.confirmPassword && 
+                    formData.password !== formData.confirmPassword 
+                      ? 'border-red-500' 
+                      : formData.confirmPassword && formData.password === formData.confirmPassword
+                      ? 'border-green-500'
+                      : ''
+                  }`}
                   placeholder="Confirm your password"
                 />
                 <button
@@ -261,7 +290,17 @@ const Register = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+              )}
+              {/* Add match indicator */}
+              {formData.confirmPassword && (
+                <div className="absolute inset-y-0 right-8 flex items-center">
+                  {formData.password === formData.confirmPassword ? (
+                    <div className="w-5 h-5 text-green-500">✓</div>
+                  ) : (
+                    <div className="w-5 h-5 text-red-500">✗</div>
+                  )}
+                </div>
               )}
             </div>
 
