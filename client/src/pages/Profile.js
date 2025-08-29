@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FiUser, FiMail, FiMapPin, FiPackage, FiHeart, FiLogOut } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
+
+  // Add state for form data
+  const [profileData, setProfileData] = useState({
+    firstName: user?.name?.split(' ')[0] || '',
+    lastName: user?.name?.split(' ')[1] || '',
+    email: user?.email || '',
+    phone: '',
+    address: ''
+  });
+
+  const handleInputChange = (field, value) => {
+    setProfileData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      // Add API call to update profile
+      console.log('Updating profile:', profileData);
+      toast.success('Profile updated successfully');
+    } catch (error) {
+      toast.error('Failed to update profile');
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -71,7 +95,8 @@ const Profile = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                       <input
                         type="text"
-                        defaultValue={user?.name?.split(' ')[0] || ''}
+                        value={profileData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
                         className="input-field"
                       />
                     </div>
@@ -79,7 +104,8 @@ const Profile = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                       <input
                         type="text"
-                        defaultValue={user?.name?.split(' ')[1] || ''}
+                        value={profileData.lastName}
+                        onChange={(e) => handleInputChange('lastName', e.target.value)}
                         className="input-field"
                       />
                     </div>
@@ -88,7 +114,8 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     <input
                       type="email"
-                      defaultValue={user?.email || ''}
+                      value={profileData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       className="input-field"
                     />
                   </div>
@@ -96,6 +123,8 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                     <input
                       type="tel"
+                      value={profileData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
                       className="input-field"
                       placeholder="Enter your phone number"
                     />
@@ -104,11 +133,13 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                     <textarea
                       rows={3}
+                      value={profileData.address}
+                      onChange={(e) => handleInputChange('address', e.target.value)}
                       className="input-field resize-none"
                       placeholder="Enter your address"
                     />
                   </div>
-                  <button className="btn-gold">Update Profile</button>
+                  <button onClick={handleUpdateProfile} className="btn-gold">Update Profile</button>
                 </div>
               </div>
             )}
