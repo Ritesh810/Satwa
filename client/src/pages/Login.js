@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
@@ -8,11 +8,21 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    rememberMe: false, // Add this
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [csrfToken, setCsrfToken] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch CSRF token
+    fetch('/api/csrf-token')
+      .then(res => res.json())
+      .then(data => setCsrfToken(data.token));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,28 +31,88 @@ const Login = () => {
     });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Replace mock login with real API
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
     setIsLoading(true);
-
+    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify(formData),
+      });
       
-      // For demo purposes, accept any email/password
-      const userData = {
-        id: 1,
-        name: formData.email.split('@')[0],
-        email: formData.email,
-      };
+      const data = await response.json();
       
-      login(userData);
-      toast.success('Login successful!');
-      navigate('/');
+      // Handle different error types
+      if (response.status === 401) {
+        toast.error('Invalid email or password');
+      } else if (response.status === 429) {
+        toast.error('Too many attempts. Please try again later.');
+      } else if (!response.ok) {
+        toast.error(data.message || 'Login failed');
+      } else {
+        // Success
+        login(data.user, data.token, formData.rememberMe); // Pass remember me flag
+        toast.success('Welcome back!');
+        navigate('/');
+      }
     } catch (error) {
-      toast.error('Login failed. Please try again.');
+      if (error.name === 'NetworkError') {
+        toast.error('No internet connection');
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Add actual social login functions
+  const handleGoogleLogin = async () => {
+    try {
+      // Implement Google OAuth
+      console.log('Google login clicked');
+      toast.info('Google login coming soon');
+    } catch (error) {
+      toast.error('Google login failed');
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      // Implement Facebook OAuth
+      console.log('Facebook login clicked');
+      toast.info('Facebook login coming soon');
+    } catch (error) {
+      toast.error('Facebook login failed');
     }
   };
 
@@ -82,10 +152,13 @@ const Login = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="input-field pl-10"
+                  className={`input-field pl-10 ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
                   placeholder="Enter your email"
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -119,6 +192,7 @@ const Login = () => {
                   )}
                 </button>
               </div>
+              {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
             </div>
 
             <div className="flex items-center justify-between">
@@ -128,6 +202,8 @@ const Login = () => {
                   name="remember-me"
                   type="checkbox"
                   className="h-4 w-4 text-polishedGold focus:ring-polishedGold border-gray-300 rounded"
+                  checked={formData.rememberMe}
+                  onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                   Remember me
@@ -135,9 +211,13 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium" style={{color:'#C9B07A'}}>
+                <Link 
+                  to="/forgot-password" 
+                  className="font-medium hover:underline" 
+                  style={{color:'#C9B07A'}}
+                >
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -170,7 +250,10 @@ const Login = () => {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <button 
+                onClick={handleGoogleLogin}
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
+              >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -180,7 +263,10 @@ const Login = () => {
                 <span className="ml-2">Google</span>
               </button>
 
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <button 
+                onClick={handleFacebookLogin}
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
+              >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
