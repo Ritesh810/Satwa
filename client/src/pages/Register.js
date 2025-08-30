@@ -267,14 +267,7 @@ const Register = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`input-field pl-10 pr-10 ${
-                    formData.confirmPassword && 
-                    formData.password !== formData.confirmPassword 
-                      ? 'border-red-500' 
-                      : formData.confirmPassword && formData.password === formData.confirmPassword
-                      ? 'border-green-500'
-                      : ''
-                  }`}
+                  className={`input-field pl-10 pr-10 ${errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : ''}`}
                   placeholder="Confirm your password"
                 />
                 <button
@@ -291,16 +284,6 @@ const Register = () => {
               </div>
               {errors.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-              {/* Add match indicator */}
-              {formData.confirmPassword && (
-                <div className="absolute inset-y-0 right-8 flex items-center">
-                  {formData.password === formData.confirmPassword ? (
-                    <div className="w-5 h-5 text-green-500">✓</div>
-                  ) : (
-                    <div className="w-5 h-5 text-red-500">✗</div>
-                  )}
-                </div>
               )}
             </div>
 

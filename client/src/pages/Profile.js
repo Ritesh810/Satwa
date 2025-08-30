@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Add this import
 import { useAuth } from '../contexts/AuthContext';
 import { FiUser, FiMail, FiMapPin, FiPackage, FiHeart, FiLogOut } from 'react-icons/fi';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 const Profile = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate(); // Add this hook
   const [activeTab, setActiveTab] = useState('profile');
 
   // Add state for form data
@@ -32,6 +34,8 @@ const Profile = () => {
 
   const handleLogout = () => {
     logout();
+    toast.success('Logged out successfully');
+    navigate('/');
   };
 
   return (
