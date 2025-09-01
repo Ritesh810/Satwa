@@ -24,6 +24,7 @@ const Checkout = () => {
     cvv: '',
     cardName: ''
   });
+  
   const [errors, setErrors] = useState({});
   const [order, setOrder] = useState(null);
   const [loadingStates, setLoadingStates] = useState({

@@ -31,8 +31,7 @@ const Shop = () => {
         product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
-
-    // Filter by category
+    
     if (categoryQuery && categoryQuery !== 'all') {
       filtered = filtered.filter(product => product.category === categoryQuery);
     }
