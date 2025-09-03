@@ -330,7 +330,7 @@ const ValuesSection = React.memo(({ values }) => (
   </section>
 ));
 
-// Team Section Component
+// Team Section component
 const TeamSection = React.memo(({ team }) => (
   <section className="py-16 bg-white relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
