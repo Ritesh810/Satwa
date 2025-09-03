@@ -1,11 +1,7 @@
-import React, { useMemo, lazy, Suspense } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { FiAward, FiUsers, FiHeart, FiStar } from 'react-icons/fi';
-
-// Lazy load heavy sections
-const TeamSection = lazy(() => import('../components/sections/TeamSection'));
-const CTASection = lazy(() => import('../components/sections/CTASection'));
 
 // Animation variants - moved outside component for optimization
 const ANIMATION_VARIANTS = {
@@ -83,6 +79,28 @@ const VALUES_DATA = [
   }
 ];
 
+// Team data
+const TEAM_DATA = [
+  {
+    name: "Sarah Johnson",
+    position: "Founder & Creative Director",
+    image: "https://images.unsplash.com/photo-1494790108755-2616b332c1a1?w=300&h=300&fit=crop&crop=face",
+    bio: "With over 15 years in jewellery design, Sarah founded Satwa with a vision to create timeless pieces."
+  },
+  {
+    name: "Michael Chen",
+    position: "Master Craftsman",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+    bio: "Michael brings decades of traditional craftsmanship techniques to every piece we create."
+  },
+  {
+    name: "Emma Davis",
+    position: "Design Lead",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+    bio: "Emma combines modern aesthetics with classic elegance in all her innovative designs."
+  }
+];
+
 const About = () => {
   const { scrollYProgress } = useScroll();
   
@@ -94,6 +112,7 @@ const About = () => {
 
   // Memoize heavy calculations
   const memoizedValues = useMemo(() => VALUES_DATA, []);
+  const memoizedTeam = useMemo(() => TEAM_DATA, []);
 
   return (
     <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50 overflow-hidden">
@@ -106,15 +125,11 @@ const About = () => {
       {/* Values Section with Stagger Animation */}
       <ValuesSection values={memoizedValues} />
 
-      {/* Team Section - Lazy Loaded */}
-      <Suspense fallback={<TeamSkeleton />}>
-        <TeamSection />
-      </Suspense>
+      {/* Team Section */}
+      <TeamSection team={memoizedTeam} />
 
-      {/* CTA Section - Lazy Loaded */}
-      <Suspense fallback={<CTASkeleton />}>
-        <CTASection />
-      </Suspense>
+      {/* CTA Section */}
+      <CTASection />
     </div>
   );
 };
@@ -315,6 +330,136 @@ const ValuesSection = React.memo(({ values }) => (
   </section>
 ));
 
+// Team Section Component
+const TeamSection = React.memo(({ team }) => (
+  <section className="py-16 bg-white relative overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader 
+        title="Meet Our Team"
+        subtitle="The passionate individuals behind every piece"
+      />
+
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        variants={ANIMATION_VARIANTS.staggerContainer}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        {team.map((member, index) => (
+          <motion.div
+            key={index}
+            className="text-center group"
+            variants={ANIMATION_VARIANTS.slideInScale}
+            whileHover={{ y: -10 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <motion.div 
+              className="relative mb-6 inline-block"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.img
+                src={member.image}
+                alt={member.name}
+                className="w-48 h-48 rounded-full mx-auto object-cover shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.5 }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full bg-gradient-to-t from-midnight/20 to-transparent opacity-0 group-hover:opacity-100"
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+            
+            <motion.h3 
+              className="text-xl font-semibold text-midnight mb-2"
+              whileHover={{ color: "#C9B07A" }}
+            >
+              {member.name}
+            </motion.h3>
+            
+            <motion.p 
+              className="text-polishedGold font-medium mb-3"
+              initial={{ opacity: 0.8 }}
+              whileHover={{ opacity: 1 }}
+            >
+              {member.position}
+            </motion.p>
+            
+            <motion.p 
+              className="text-gray-600 text-sm leading-relaxed"
+              initial={{ opacity: 0.7 }}
+              whileHover={{ opacity: 1 }}
+            >
+              {member.bio}
+            </motion.p>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  </section>
+));
+
+// CTA Section Component
+const CTASection = React.memo(() => (
+  <section className="py-16 bg-midnight relative overflow-hidden">
+    {/* Background Pattern */}
+    <motion.div
+      className="absolute inset-0 opacity-10"
+      style={{
+        backgroundImage: `radial-gradient(circle at 25% 25%, #C9B07A 2px, transparent 2px)`,
+        backgroundSize: '50px 50px'
+      }}
+      animate={{ 
+        backgroundPosition: ['0px 0px', '50px 50px'],
+      }}
+      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+    />
+
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <motion.div
+        variants={ANIMATION_VARIANTS.staggerContainer}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        className="space-y-8"
+      >
+        <motion.h2 
+          className="text-3xl lg:text-4xl font-serif font-bold text-linen"
+          variants={ANIMATION_VARIANTS.fadeInUp}
+        >
+          Ready to Find Your Perfect Piece?
+        </motion.h2>
+        
+        <motion.p 
+          className="text-xl text-linen/80 max-w-2xl mx-auto leading-relaxed"
+          variants={ANIMATION_VARIANTS.fadeInUp}
+        >
+          Explore our exquisite collection and discover jewellery that tells your unique story.
+        </motion.p>
+        
+        <motion.div
+          variants={ANIMATION_VARIANTS.fadeInUp}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Link to="/shop" className="btn-gold inline-flex items-center text-lg px-8 py-4">
+            <span>Explore Collection</span>
+            <motion.div
+              className="ml-2"
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.div>
+          </Link>
+        </motion.div>
+      </motion.div>
+    </div>
+  </section>
+));
+
 // Optimized Value Card Component
 const ValueCard = React.memo(({ value, index }) => (
   <motion.div 
@@ -445,34 +590,6 @@ const SectionHeader = React.memo(({ title, subtitle }) => (
     </motion.p>
   </motion.div>
 ));
-
-// Loading Skeletons
-const TeamSkeleton = () => (
-  <div className="py-16 bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="text-center">
-            <div className="w-48 h-48 bg-gray-200 rounded-full mx-auto mb-4 animate-pulse" />
-            <div className="h-6 bg-gray-200 rounded mx-auto mb-2 w-32 animate-pulse" />
-            <div className="h-4 bg-gray-200 rounded mx-auto mb-3 w-24 animate-pulse" />
-            <div className="h-16 bg-gray-200 rounded mx-auto animate-pulse" />
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-const CTASkeleton = () => (
-  <div className="py-16 bg-midnight">
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div className="h-10 bg-gray-700 rounded mx-auto mb-4 w-64 animate-pulse" />
-      <div className="h-6 bg-gray-700 rounded mx-auto mb-8 w-96 animate-pulse" />
-      <div className="h-12 bg-gray-700 rounded mx-auto w-40 animate-pulse" />
-    </div>
-  </div>
-);
 
 export default About;
 
