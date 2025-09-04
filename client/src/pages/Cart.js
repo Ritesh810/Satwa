@@ -208,7 +208,7 @@ const Cart = () => {
                 Proceed to Checkout
               </Link>
 
-              {/* Continue Shopping */}
+              {/* Continue Shopping Button */}
               <Link
                 to="/shop"
                 className="w-full mt-4 btn-gold-outline flex items-center justify-center"

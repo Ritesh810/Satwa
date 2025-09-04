@@ -79,7 +79,7 @@ const VALUES_DATA = [
   }
 ];
 
-// Team data
+// Team Data
 const TEAM_DATA = [
   {
     name: "Sarah Johnson",
