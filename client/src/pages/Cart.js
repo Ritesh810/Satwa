@@ -38,7 +38,7 @@ const ANIMATION_VARIANTS = {
 
 // Optimized Loading Skeleton Component
 const CartLoadingSkeleton = React.memo(() => (
-  <div className="min-h-screen bg-linen py-12">
+  <div className="min-h-screen bg-linen py-[100px]">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="h-10 bg-gray-200 rounded w-48 mb-8 animate-pulse" />
       <div className="lg:grid lg:grid-cols-3 lg:gap-8">
