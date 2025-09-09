@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { FiMail, FiPhone, FiMapPin, FiSend, FiClock, FiHelpCircle, FiCheck } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiSend, FiClock, FiHelpCircle, FiCheck, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 // Ultra-Optimized Animation Variants with Hardware Acceleration
@@ -168,6 +168,7 @@ const ANIMATION_VARIANTS = {
     },
     transition: {
       duration: 6,
+      type: "tween",
       repeat: Infinity,
       ease: "easeInOut",
       repeatType: "reverse"
@@ -212,6 +213,7 @@ const FloatingOrbs = React.memo(() => {
           transition={{
             duration: orb.duration,
             repeat: Infinity,
+            type: "tween",
             delay: orb.delay,
             ease: "easeInOut",
             repeatType: "reverse"
@@ -441,7 +443,7 @@ const ContactInfoItem = React.memo(({ icon: Icon, title, content, subtitle }) =>
         
         <motion.div
           animate={{ 
-            rotate: isHovered ? [0, -5, 5, 0] : 0,
+            rotate: isHovered ? 5 : 0,
             scale: isHovered ? 1.1 : 1
           }}
           transition={{ 
@@ -812,13 +814,13 @@ const Contact = () => {
               y: [0, 10, 0],
               opacity: [0.5, 1, 0.5]
             }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Infinity, type: "tween" }}
           >
             <div className="w-6 h-10 border-2 border-linen/50 rounded-full flex justify-center">
               <motion.div
                 className="w-1 h-3 bg-linen/70 rounded-full mt-2"
                 animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+                transition={{ duration: 1.5, repeat: Infinity, type: "tween" }}
               />
             </div>
           </motion.div>
@@ -1048,7 +1050,7 @@ const Contact = () => {
                           x: [0, 5, 0],
                           rotate: [0, 5, 0]
                         }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: Infinity, type: "tween" }}
                       >
                         <FiSend className="w-5 h-5 mr-2" />
                       </motion.div>
@@ -1105,7 +1107,6 @@ const Contact = () => {
             >
               <motion.h2 
                 className="text-3xl font-bold text-midnight mb-4"
-                style={{ y: textY }}
               >
                 Get in touch
                 <motion.div
@@ -1163,7 +1164,6 @@ const Contact = () => {
             >
               <motion.h3 
                 className="text-lg font-semibold text-midnight mb-4"
-                style={{ y: textY }}
               >
                 Follow us
               </motion.h3>
@@ -1196,10 +1196,10 @@ const Contact = () => {
                   >
                     <motion.div
                       animate={hoveredSocial === index ? { 
-                        scale: [1, 1.2, 1],
-                        rotate: [0, 10, -10, 0]
-                      } : {}}
-                      transition={{ duration: 0.6 }}
+                        scale: 1.2,
+                        rotate: 10
+                      } : { scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.6, type: "spring", stiffness: 300 }}
                     >
                       <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     </motion.div>
@@ -1211,7 +1211,7 @@ const Contact = () => {
                         opacity: [0, 1, 0],
                         scale: [1, 1.2, 1.4]
                       } : {}}
-                      transition={{ duration: 0.8 }}
+                      transition={{ duration: 0.8, type: "tween" }}
                     />
                   </motion.a>
                 ))}
