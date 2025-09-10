@@ -1,6 +1,28 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiSend, FiClock, FiHelpCircle, FiCheck, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+
+// Simple animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+};
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.5 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 // Simple Form Field component
 const FormField = ({ 
@@ -30,7 +52,12 @@ const FormField = ({
   }, [required, value, type]);
 
   return (
-    <div className="relative">
+    <motion.div 
+      className="relative"
+      variants={fadeInUp}
+      initial="initial"
+      animate="animate"
+    >
       <label 
         htmlFor={name} 
         className="block text-sm font-medium text-gray-700 mb-2"
@@ -71,30 +98,44 @@ const FormField = ({
         
         {/* Simple validation indicator */}
         {isValid !== null && (
-          <div className={`absolute right-3 top-1/2 -translate-y-1/2 ${
-            isValid ? 'text-green-500' : 'text-red-500'
-          }`}>
+          <motion.div 
+            className={`absolute right-3 top-1/2 -translate-y-1/2 ${
+              isValid ? 'text-green-500' : 'text-red-500'
+            }`}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.2 }}
+          >
             {isValid ? <FiCheck className="w-4 h-4" /> : <span>!</span>}
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 // Simple Contact Info component
 const ContactInfoItem = ({ icon: Icon, title, content, subtitle }) => {
   return (
-    <div className="flex items-start space-x-4">
-      <div className="w-12 h-12 bg-polishedGold rounded-lg flex items-center justify-center">
+    <motion.div 
+      className="flex items-start space-x-4"
+      variants={fadeInUp}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div 
+        className="w-12 h-12 bg-polishedGold rounded-lg flex items-center justify-center"
+        whileHover={{ rotate: 5 }}
+        transition={{ duration: 0.2 }}
+      >
         <Icon className="w-5 h-5 text-midnight" />
-      </div>
+      </motion.div>
       <div>
         <h3 className="text-lg font-semibold text-midnight">{title}</h3>
         <p className="text-gray-600">{content}</p>
         {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -107,14 +148,23 @@ const BusinessHours = () => {
   ];
 
   return (
-    <div className="space-y-3">
+    <motion.div 
+      className="space-y-3"
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+    >
       {hours.map((hour, index) => (
-        <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+        <motion.div 
+          key={index} 
+          className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"
+          variants={fadeInUp}
+        >
           <span className="font-medium text-gray-700">{hour.day}</span>
           <span className="text-gray-600">{hour.time}</span>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
@@ -140,20 +190,40 @@ const FAQ = () => {
   return (
     <div className="space-y-4">
       {faqs.map((faq, index) => (
-        <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-          <button
+        <motion.div 
+          key={index} 
+          className="border border-gray-200 rounded-lg overflow-hidden"
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+          transition={{ delay: index * 0.1 }}
+        >
+          <motion.button
             className="w-full px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
             onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+            whileHover={{ backgroundColor: "#f9fafb" }}
+            whileTap={{ scale: 0.98 }}
           >
             <span className="font-medium text-gray-800">{faq.question}</span>
-            <FiHelpCircle className={`w-5 h-5 text-gray-500 transform ${openFAQ === index ? 'rotate-180' : ''}`} />
-          </button>
+            <motion.div
+              animate={{ rotate: openFAQ === index ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <FiHelpCircle className="w-5 h-5 text-gray-500" />
+            </motion.div>
+          </motion.button>
           {openFAQ === index && (
-            <div className="px-4 py-3 bg-white border-t">
+            <motion.div 
+              className="px-4 py-3 bg-white border-t"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <p className="text-gray-600">{faq.answer}</p>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       ))}
     </div>
   );
@@ -218,9 +288,19 @@ const Contact = () => {
   ], []);
 
   return (
-    <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50">
+    <motion.div 
+      className="pt-16 lg:pt-20 min-h-screen bg-gray-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Hero Section */}
-      <section className="hero-dark py-20 relative">
+      <motion.section 
+        className="hero-dark py-20 relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="absolute inset-0 opacity-10">
           <div 
             style={{
@@ -230,26 +310,66 @@ const Contact = () => {
           />
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h1 className="text-4xl lg:text-6xl font-serif font-bold text-linen mb-6">
+        <motion.div 
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <motion.h1 
+            className="text-4xl lg:text-6xl font-serif font-bold text-linen mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             Get in Touch
-          </h1>
+          </motion.h1>
           
-          <div className="w-32 h-1 bg-gradient-to-r from-polishedGold via-linen to-polishedGold mx-auto mb-6" />
+          <motion.div 
+            className="w-32 h-1 bg-gradient-to-r from-polishedGold via-linen to-polishedGold mx-auto mb-6"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          />
           
-          <p className="text-xl text-linen/90 max-w-3xl mx-auto leading-relaxed">
+          <motion.p 
+            className="text-xl text-linen/90 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-          </p>
-        </div>
-      </section>
+          </motion.p>
+        </motion.div>
+      </motion.section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <motion.div 
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+        >
           
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-midnight mb-6">Send Message</h2>
+          <motion.div 
+            className="bg-white rounded-2xl shadow-lg p-8"
+            variants={fadeInUp}
+          >
+            <motion.h2 
+              className="text-3xl font-bold text-midnight mb-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              Send Message
+            </motion.h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -304,93 +424,171 @@ const Contact = () => {
                 required
               />
               
-              <button
+              <motion.button
                 type="submit"
                 disabled={isSubmitting || submitSuccess}
                 className="w-full btn-gold disabled:opacity-50 relative overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center justify-center space-x-2">
+                <motion.div 
+                  className="flex items-center justify-center space-x-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
                   <span>
                     {isSubmitting ? 'Sending...' : submitSuccess ? 'Message Sent!' : 'Send Message'}
                   </span>
                   <FiSend className="w-4 h-4" />
-                </div>
-              </button>
+                </motion.div>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
 
           {/* Contact Information */}
-          <div className="space-y-8">
+          <motion.div 
+            className="space-y-8"
+            variants={fadeInUp}
+          >
             {/* Contact Details */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-3xl font-bold text-midnight mb-6">Contact Information</h2>
-              <div className="space-y-6">
+            <motion.div 
+              className="bg-white rounded-2xl shadow-lg p-8"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.h2 
+                className="text-3xl font-bold text-midnight mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Contact Information
+              </motion.h2>
+              <motion.div 
+                className="space-y-6"
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+              >
                 {contactInfo.map((info, index) => (
                   <ContactInfoItem key={index} {...info} />
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Business Hours */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center space-x-3 mb-6">
+            <motion.div 
+              className="bg-white rounded-2xl shadow-lg p-8"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="flex items-center space-x-3 mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
                 <FiClock className="w-6 h-6 text-polishedGold" />
                 <h3 className="text-2xl font-bold text-midnight">Business Hours</h3>
-              </div>
+              </motion.div>
               <BusinessHours />
-            </div>
+            </motion.div>
 
             {/* FAQ Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center space-x-3 mb-6">
+            <motion.div 
+              className="bg-white rounded-2xl shadow-lg p-8"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="flex items-center space-x-3 mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
                 <FiHelpCircle className="w-6 h-6 text-polishedGold" />
                 <h3 className="text-2xl font-bold text-midnight">Frequently Asked Questions</h3>
-              </div>
+              </motion.div>
               <FAQ />
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Social Media and Additional Info */}
-        <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
-          <div className="text-center mb-8">
+        <motion.div 
+          className="mt-16 bg-white rounded-2xl shadow-lg p-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
             <h3 className="text-2xl font-bold text-midnight mb-4">Connect With Us</h3>
             <p className="text-gray-600">Follow us on social media for the latest updates</p>
-          </div>
+          </motion.div>
           
-          <div className="flex justify-center space-x-6">
-            <a href="#" className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-polishedGold hover:text-white transition-colors">
-              <FiFacebook className="w-5 h-5" />
-            </a>
-            <a href="#" className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-polishedGold hover:text-white transition-colors">
-              <FiTwitter className="w-5 h-5" />
-            </a>
-            <a href="#" className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-polishedGold hover:text-white transition-colors">
-              <FiInstagram className="w-5 h-5" />
-            </a>
-            <a href="#" className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-polishedGold hover:text-white transition-colors">
-              <FiLinkedin className="w-5 h-5" />
-            </a>
-          </div>
+          <motion.div 
+            className="flex justify-center space-x-6"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            {[
+              { icon: FiFacebook, href: "#" },
+              { icon: FiTwitter, href: "#" },
+              { icon: FiInstagram, href: "#" },
+              { icon: FiLinkedin, href: "#" }
+            ].map((social, index) => (
+              <motion.a 
+                key={index}
+                href={social.href} 
+                className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-polishedGold hover:text-white transition-colors"
+                variants={fadeInUp}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <social.icon className="w-5 h-5" />
+              </motion.a>
+            ))}
+          </motion.div>
           
-          <div className="mt-8 text-center">
+          <motion.div 
+            className="mt-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+          >
             <h4 className="text-lg font-semibold text-midnight mb-2">Need immediate assistance?</h4>
             <p className="text-gray-600 mb-4">
               Our customer service team is available to help you with any questions or concerns.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4">
-              <a href="tel:+15551234567" className="text-polishedGold hover:text-polishedGold/80 font-medium">
+              <motion.a 
+                href="tel:+15551234567" 
+                className="text-polishedGold hover:text-polishedGold/80 font-medium"
+                whileHover={{ scale: 1.05 }}
+              >
                 📞 Call us: +1 (555) 123-4567
-              </a>
+              </motion.a>
               <span className="hidden sm:inline text-gray-300">|</span>
-              <a href="mailto:info@satwa.com" className="text-polishedGold hover:text-polishedGold/80 font-medium">
+              <motion.a 
+                href="mailto:info@satwa.com" 
+                className="text-polishedGold hover:text-polishedGold/80 font-medium"
+                whileHover={{ scale: 1.05 }}
+              >
                 ✉️ Email: info@satwa.com
-              </a>
+              </motion.a>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 
