@@ -1,23 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWishlist } from '../contexts/WishlistContext';
-import { FiHeart, FiShoppingCart, FiTrash2 } from 'react-icons/fi';
+import { FiHeart, FiTrash2 } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import toast from 'react-hot-toast';
 
 const Wishlist = () => {
+  // No changes needed here, the context hook is well-used
   const { items, removeFromWishlist, clearWishlist } = useWishlist();
 
+  // The removal handler is now passed down to the child component
   const handleRemoveItem = (productId) => {
     removeFromWishlist(productId);
     toast.success('Removed from wishlist');
   };
 
+  // ADDED: Confirmation dialog for a destructive action
   const handleClearWishlist = () => {
-    clearWishlist();
-    toast.success('Wishlist cleared');
+    if (window.confirm('Are you sure you want to clear your entire wishlist?')) {
+      clearWishlist();
+      toast.success('Wishlist cleared');
+    }
   };
 
+  // The empty state is already well-implemented, no changes needed
   if (items.length === 0) {
     return (
       <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50">
@@ -55,15 +61,22 @@ const Wishlist = () => {
           </div>
           <button
             onClick={handleClearWishlist}
-            className="text-red-600 hover:text-red-700 font-medium"
+            className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium"
+            aria-label="Clear entire wishlist" // Added for accessibility
           >
+            <FiTrash2 />
             Clear All
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {items.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            // MODIFIED: Pass the handler function as a prop
+            <ProductCard
+              key={product.id}
+              product={product}
+              onRemoveFromWishlist={() => handleRemoveItem(product.id)}
+            />
           ))}
         </div>
       </div>
@@ -72,4 +85,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-
