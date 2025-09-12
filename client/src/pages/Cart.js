@@ -80,7 +80,7 @@ const CartHeader = React.memo(() => (
     initial={{ opacity: 0, y: -20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
-    className="text-center mb-12"
+    className="text-center mb-12 pt-16 lg:pt-20" // Added top padding here
   >
     <motion.h1 
       className="text-4xl font-serif font-bold text-gray-900 mb-4"
@@ -699,7 +699,7 @@ const Cart = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-linen py-12"
+      className="min-h-screen bg-linen py-12 pt-20 lg:pt-24" // Increased top padding
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
