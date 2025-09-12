@@ -215,7 +215,6 @@ const Shop = () => {
                     {filteredProducts.length} products
                   </span>
                 </div>
-
                 <div className="flex items-center space-x-4">
                   {/* Sort */}
                   <div className="flex items-center space-x-2">
