@@ -24,8 +24,6 @@ const Profile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      // Add API call to update profile
-      console.log('Updating profile:', profileData);
       toast.success('Profile updated successfully');
     } catch (error) {
       toast.error('Failed to update profile');
