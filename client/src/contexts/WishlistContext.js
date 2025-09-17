@@ -35,7 +35,7 @@ export const WishlistProvider = ({ children }) => {
     items: [],
   });
 
-  // Load wishlist from localStorage on mount
+  // Load wishlist from localStorage
   useEffect(() => {
     const savedWishlist = localStorage.getItem('satwa-wishlist');
     if (savedWishlist) {
