@@ -53,7 +53,7 @@ export const CartProvider = ({ children }) => {
     items: [],
   });
 
-  // Load cart from localStorage on mount
+  // Load cart from localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('satwa-cart');
     if (savedCart) {
