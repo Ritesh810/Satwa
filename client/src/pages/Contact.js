@@ -38,7 +38,8 @@ const FormField = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isValid, setIsValid] = useState(null);
-  
+
+  // email vaildation 
   const handleFocus = useCallback(() => setIsFocused(true), []);
   const handleBlur = useCallback(() => {
     setIsFocused(false);
