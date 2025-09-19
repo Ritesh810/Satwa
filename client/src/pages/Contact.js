@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiSend, FiClock, FiHelpCircle, FiCheck, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
-// Simple animation
+// Simple framer animation
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
