@@ -51,7 +51,7 @@ const Shop = () => {
       product.price >= priceRange[0] && product.price <= priceRange[1]
     );
 
-    // Sort products
+    // Sort products based on sortBy
     switch (sortBy) {
       case 'price-low':
         filtered.sort((a, b) => a.price - b.price);
