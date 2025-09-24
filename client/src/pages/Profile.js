@@ -5,23 +5,54 @@ import { useAuth } from '../contexts/AuthContext';
 import { FiUser, FiMail, FiMapPin, FiPackage, FiHeart, FiLogOut, FiEdit3, FiCheck } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
+// Constants for tab IDs to prevent magic strings
+const TABS = {
+  PROFILE: 'profile',
+  ORDERS: 'orders',
+  WISHLIST: 'wishlist'
+};
+
+// Constants for profile data fields
+const PROFILE_FIELDS = {
+  FIRST_NAME: 'firstName',
+  LAST_NAME: 'lastName',
+  EMAIL: 'email',
+  PHONE: 'phone',
+  ADDRESS: 'address'
+};
+
+// Constants for animation durations
+const ANIMATION_DURATIONS = {
+  FAST: 0.2,
+  NORMAL: 0.3,
+  SLOW: 0.6,
+  VERY_SLOW: 0.8
+};
+
+// Constants for toast messages
+const TOAST_MESSAGES = {
+  PROFILE_UPDATED: 'Profile updated successfully',
+  PROFILE_UPDATE_FAILED: 'Failed to update profile',
+  LOGOUT_SUCCESS: 'Logged out successfully'
+};
+
 // Animation variants
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  transition: { duration: ANIMATION_DURATIONS.SLOW }
 };
 
 const sidebarVariants = {
   initial: { opacity: 0, x: -30 },
   animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.6, delay: 0.2 }
+  transition: { duration: ANIMATION_DURATIONS.SLOW, delay: 0.2 }
 };
 
 const contentVariants = {
   initial: { opacity: 0, x: 30 },
   animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.6, delay: 0.3 }
+  transition: { duration: ANIMATION_DURATIONS.SLOW, delay: 0.3 }
 };
 
 const staggerContainer = {
@@ -43,7 +74,7 @@ const tabVariants = {
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.9 },
-  transition: { duration: 0.3 }
+  transition: { duration: ANIMATION_DURATIONS.NORMAL }
 };
 
 // Animated Avatar Component
@@ -51,20 +82,20 @@ const AnimatedAvatar = ({ user }) => (
   <motion.div
     initial={{ scale: 0, rotate: -180 }}
     animate={{ scale: 1, rotate: 0 }}
-    transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
+    transition={{ duration: ANIMATION_DURATIONS.VERY_SLOW, delay: 0.4, type: "spring", stiffness: 100 }}
     className="text-center mb-6"
   >
     <motion.div 
       className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 relative overflow-hidden" 
       style={{background:'#E0E1DD', border:'1px solid #C9B07A'}}
       whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
     >
       <motion.div
         className="absolute inset-0 rounded-full bg-gradient-to-br from-polishedGold/20 to-transparent"
         initial={{ scale: 0 }}
         whileHover={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
       />
       <FiUser className="w-10 h-10 relative z-10" style={{color:'#0D1B2A'}} />
     </motion.div>
@@ -114,7 +145,7 @@ const AnimatedTabButton = ({ tab, isActive, onClick, index }) => (
         rotate: isActive ? 360 : 0,
         color: isActive ? '#C9B07A' : undefined
       }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
     >
       <tab.icon className="w-5 h-5" />
     </motion.div>
@@ -125,18 +156,18 @@ const AnimatedTabButton = ({ tab, isActive, onClick, index }) => (
         className="ml-auto w-2 h-2 bg-polishedGold rounded-full"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
       />
     )}
   </motion.button>
 );
 
 // Animated Input Field Component
-const AnimatedInputField = ({ label, type = "text", value, onChange, placeholder, rows }) => (
+const AnimatedInputField = ({ label, type = "text", value, onChange, placeholder, rows, disabled = false }) => (
   <motion.div
     variants={itemVariants}
-    whileHover={{ y: -2 }}
-    transition={{ duration: 0.2 }}
+    whileHover={{ y: disabled ? 0 : -2 }}
+    transition={{ duration: ANIMATION_DURATIONS.FAST }}
   >
     <motion.label 
       className="block text-sm font-medium text-gray-700 mb-2"
@@ -152,26 +183,28 @@ const AnimatedInputField = ({ label, type = "text", value, onChange, placeholder
         rows={rows}
         value={value}
         onChange={onChange}
-        className="input-field resize-none"
+        disabled={disabled}
+        className={`input-field resize-none ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
         placeholder={placeholder}
-        whileFocus={{ 
+        whileFocus={disabled ? {} : { 
           scale: 1.02,
           boxShadow: "0 0 0 3px rgba(201, 176, 122, 0.1)"
         }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: ANIMATION_DURATIONS.FAST }}
       />
     ) : (
       <motion.input
         type={type}
         value={value}
         onChange={onChange}
-        className="input-field"
+        disabled={disabled}
+        className={`input-field ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
         placeholder={placeholder}
-        whileFocus={{ 
+        whileFocus={disabled ? {} : { 
           scale: 1.02,
           boxShadow: "0 0 0 3px rgba(201, 176, 122, 0.1)"
         }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: ANIMATION_DURATIONS.FAST }}
       />
     )}
   </motion.div>
@@ -187,7 +220,7 @@ const AnimatedOrderCard = ({ order, index }) => (
       boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
       borderColor: "#C9B07A"
     }}
-    transition={{ duration: 0.3 }}
+    transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
     initial="initial"
     animate="animate"
     custom={index}
@@ -195,7 +228,7 @@ const AnimatedOrderCard = ({ order, index }) => (
     <motion.div
       className="absolute inset-0 bg-gradient-to-r from-polishedGold/5 to-transparent opacity-0"
       whileHover={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
     />
     
     <div className="relative z-10">
@@ -236,15 +269,15 @@ const AnimatedOrderCard = ({ order, index }) => (
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState(TABS.PROFILE);
   const [isEditing, setIsEditing] = useState(false);
 
   const [profileData, setProfileData] = useState({
-    firstName: user?.name?.split(' ')[0] || '',
-    lastName: user?.name?.split(' ')[1] || '',
-    email: user?.email || '',
-    phone: '',
-    address: ''
+    [PROFILE_FIELDS.FIRST_NAME]: user?.name?.split(' ')[0] || '',
+    [PROFILE_FIELDS.LAST_NAME]: user?.name?.split(' ')[1] || '',
+    [PROFILE_FIELDS.EMAIL]: user?.email || '',
+    [PROFILE_FIELDS.PHONE]: '',
+    [PROFILE_FIELDS.ADDRESS]: ''
   });
 
   const handleInputChange = (field, value) => {
@@ -254,22 +287,23 @@ const Profile = () => {
   const handleUpdateProfile = async () => {
     try {
       setIsEditing(false);
-      toast.success('Profile updated successfully');
+      toast.success(TOAST_MESSAGES.PROFILE_UPDATED);
     } catch (error) {
-      toast.error('Failed to update profile');
+      toast.error(TOAST_MESSAGES.PROFILE_UPDATE_FAILED);
     }
   };
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully');
+    toast.success(TOAST_MESSAGES.LOGOUT_SUCCESS);
     navigate('/');
   };
 
+  // Tab configuration with constants
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: FiUser },
-    { id: 'orders', label: 'Orders', icon: FiPackage },
-    { id: 'wishlist', label: 'Wishlist', icon: FiHeart },
+    { id: TABS.PROFILE, label: 'Profile', icon: FiUser },
+    { id: TABS.ORDERS, label: 'Orders', icon: FiPackage },
+    { id: TABS.WISHLIST, label: 'Wishlist', icon: FiHeart },
   ];
 
   return (
@@ -284,7 +318,7 @@ const Profile = () => {
           className="mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: ANIMATION_DURATIONS.SLOW }}
         >
           <motion.h1 
             className="text-3xl font-serif font-bold text-midnight"
@@ -310,7 +344,7 @@ const Profile = () => {
                 boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
                 y: -2
               }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
             >
               <AnimatedAvatar user={user} />
 
@@ -343,7 +377,7 @@ const Profile = () => {
                 >
                   <motion.div
                     whileHover={{ rotate: 10 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: ANIMATION_DURATIONS.FAST }}
                   >
                     <FiLogOut className="w-5 h-5" />
                   </motion.div>
@@ -361,7 +395,7 @@ const Profile = () => {
             <AnimatePresence mode="wait">
               
               {/* Profile Tab */}
-              {activeTab === 'profile' && (
+              {activeTab === TABS.PROFILE && (
                 <motion.div
                   key="profile"
                   className="bg-white rounded-xl shadow-lg p-6"
@@ -391,7 +425,7 @@ const Profile = () => {
                     >
                       <motion.div
                         animate={{ rotate: isEditing ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: ANIMATION_DURATIONS.NORMAL }}
                       >
                         {isEditing ? <FiCheck /> : <FiEdit3 />}
                       </motion.div>
@@ -408,59 +442,69 @@ const Profile = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <AnimatedInputField
                         label="First Name"
-                        value={profileData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        value={profileData[PROFILE_FIELDS.FIRST_NAME]}
+                        onChange={(e) => handleInputChange(PROFILE_FIELDS.FIRST_NAME, e.target.value)}
+                        disabled={!isEditing}
                       />
                       <AnimatedInputField
                         label="Last Name"
-                        value={profileData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        value={profileData[PROFILE_FIELDS.LAST_NAME]}
+                        onChange={(e) => handleInputChange(PROFILE_FIELDS.LAST_NAME, e.target.value)}
+                        disabled={!isEditing}
                       />
                     </div>
 
                     <AnimatedInputField
                       label="Email"
                       type="email"
-                      value={profileData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      value={profileData[PROFILE_FIELDS.EMAIL]}
+                      onChange={(e) => handleInputChange(PROFILE_FIELDS.EMAIL, e.target.value)}
+                      disabled={!isEditing}
                     />
 
                     <AnimatedInputField
                       label="Phone"
                       type="tel"
-                      value={profileData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      value={profileData[PROFILE_FIELDS.PHONE]}
+                      onChange={(e) => handleInputChange(PROFILE_FIELDS.PHONE, e.target.value)}
                       placeholder="Enter your phone number"
+                      disabled={!isEditing}
                     />
 
                     <AnimatedInputField
                       label="Address"
-                      value={profileData.address}
-                      onChange={(e) => handleInputChange('address', e.target.value)}
+                      value={profileData[PROFILE_FIELDS.ADDRESS]}
+                      onChange={(e) => handleInputChange(PROFILE_FIELDS.ADDRESS, e.target.value)}
                       placeholder="Enter your address"
                       rows={3}
+                      disabled={!isEditing}
                     />
 
-                    <motion.button 
-                      onClick={handleUpdateProfile} 
-                      className="btn-gold"
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <motion.span
-                        animate={{ x: [0, 4, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
+                    {isEditing && (
+                      <motion.button 
+                        onClick={handleUpdateProfile} 
+                        className="btn-gold"
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
                       >
-                        Update Profile →
-                      </motion.span>
-                    </motion.button>
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          Update Profile →
+                        </motion.span>
+                      </motion.button>
+                    )}
                   </motion.div>
                 </motion.div>
               )}
 
               {/* Orders Tab */}
-              {activeTab === 'orders' && (
+              {activeTab === TABS.ORDERS && (
                 <motion.div
                   key="orders"
                   className="bg-white rounded-xl shadow-lg p-6"
@@ -492,7 +536,7 @@ const Profile = () => {
               )}
 
               {/* Wishlist Tab */}
-              {activeTab === 'wishlist' && (
+              {activeTab === TABS.WISHLIST && (
                 <motion.div
                   key="wishlist"
                   className="bg-white rounded-xl shadow-lg p-6"
