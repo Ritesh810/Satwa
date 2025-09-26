@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FiFilter, FiGrid, FiList, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
@@ -18,9 +18,13 @@ const Shop = () => {
   const categoryQuery = searchParams.get('category') || '';
 
   // Get unique materials
-  const materials = [...new Set(products.map(product => product.material))];
+  const materials = useMemo(() => 
+    [...new Set(products.map(product => product.material))], 
+    []
+  );
 
-  useEffect(() => {
+  // Memoize filtered products calculation
+  const filteredProductsMemo = useMemo(() => {
     let filtered = products;
 
     // Filter by search query
@@ -73,8 +77,12 @@ const Shop = () => {
         break;
     }
 
-    setFilteredProducts(filtered);
+    return filtered;
   }, [searchQuery, categoryQuery, selectedCategories, selectedMaterials, priceRange, sortBy]);
+
+  useEffect(() => {
+    setFilteredProducts(filteredProductsMemo);
+  }, [filteredProductsMemo]);
 
   const handleCategoryToggle = (category) => {
     setSelectedCategories(prev =>
