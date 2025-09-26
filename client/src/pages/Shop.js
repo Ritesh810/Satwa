@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FiFilter, FiGrid, FiList, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../components/ProductCard';
 import { products, categories, getProductsByCategory } from '../data/products';
 
@@ -105,6 +106,28 @@ const Shop = () => {
     setSelectedMaterials([]);
     setPriceRange([0, 2000]);
     setSortBy('featured');
+  };
+
+  // Animation variants
+  const ANIMATION_VARIANTS = {
+    page: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      transition: { duration: 0.5 }
+    },
+    staggerContainer: {
+      animate: {
+        transition: {
+          staggerChildren: 0.1
+        }
+      }
+    },
+    item: {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+      transition: { duration: 0.3 }
+    }
   };
 
   return (
@@ -262,15 +285,28 @@ const Shop = () => {
 
             {/* Products Grid */}
             {filteredProducts.length > 0 ? (
-              <div className={`grid gap-6 ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-                  : 'grid-cols-1'
-              }`}>
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              <motion.div 
+                className={`grid gap-6 ${
+                  viewMode === 'grid' 
+                    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+                    : 'grid-cols-1'
+                }`}
+                variants={ANIMATION_VARIANTS.staggerContainer}
+                initial="initial"
+                animate="animate"
+              >
+                <AnimatePresence>
+                  {filteredProducts.map((product) => (
+                    <motion.div
+                      key={product.id}
+                      variants={ANIMATION_VARIANTS.item}
+                      layout
+                    >
+                      <ProductCard product={product} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             ) : (
               <div className="text-center py-12">
                 <div className="text-gray-400 mb-4">
