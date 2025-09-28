@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -360,6 +360,22 @@ const EmptyState = React.memo(() => (
     </div>
   </motion.div>
 ));
+
+const PriceRangeSlider = React.memo(({ priceRange, setPriceRange }) => {
+  const [localRange, setLocalRange] = useState(priceRange);
+  
+  // Debounce price changes
+  useEffect(() => {
+    const timer = setTimeout(() => setPriceRange(localRange), 300);
+    return () => clearTimeout(timer);
+  }, [localRange, setPriceRange]);
+
+  return (
+    <div className="space-y-4">
+      {/* Dual range slider implementation */}
+    </div>
+  );
+});
 
 const Wishlist = () => {
   const { items, removeFromWishlist, clearWishlist } = useWishlist();
