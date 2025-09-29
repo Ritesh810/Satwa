@@ -16,7 +16,7 @@ const NotFound = () => {
         <div className="space-y-4">
           <Link to="/" className="btn-gold inline-flex items-center">
             <FiHome className="mr-2 w-5 h-5" />
-            Go Home
+            Back to Home
           </Link>
           <button
             onClick={() => window.history.back()}
