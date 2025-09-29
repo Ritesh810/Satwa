@@ -23,7 +23,7 @@ const NotFound = () => {
             className="w-full btn-gold-outline inline-flex items-center justify-center"
           >
             <FiArrowLeft className="mr-2 w-5 h-5" />
-            Go Back
+            Back to Previous Page
           </button>
         </div>
       </div>
