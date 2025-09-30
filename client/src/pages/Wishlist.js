@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWishlist } from '../contexts/WishlistContext';
-import { FiHeart, FiTrash2, FiShoppingBag } from 'react-icons/fi';
+import { FiHeart, FiTrash2, FiShoppingBag, FiShare2 } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import toast from 'react-hot-toast';
 
@@ -25,6 +25,13 @@ const DELAYS = {
   VERY_LONG: 0.7,
   EXTRA_LONG: 0.9,
   SUPER_LONG: 1.0
+};
+
+// Toast messages constants
+const TOAST_MESSAGES = {
+  ITEM_REMOVED: 'Removed from wishlist',
+  WISHLIST_CLEARED: 'Wishlist cleared',
+  WISHLIST_SHARED: 'Wishlist link copied to clipboard!'
 };
 
 // Centralized Animation Variants
@@ -63,7 +70,6 @@ const ANIMATION_VARIANTS = {
 
   // Stagger containers
   staggerContainer: {
-    initial: {},
     animate: {
       transition: {
         staggerChildren: DELAYS.SHORT,
@@ -177,6 +183,18 @@ const ANIMATION_VARIANTS = {
     }
   },
 
+  // Share button animations
+  shareButton: {
+    initial: { opacity: 0, x: 10 },
+    animate: { opacity: 1, x: 0 },
+    transition: { duration: DURATIONS.MEDIUM, delay: DELAYS.VERY_LONG }
+  },
+
+  shareButtonHover: {
+    scale: 1.05,
+    transition: { duration: DURATIONS.NORMAL }
+  },
+
   // Wishlist badge animations
   wishlistBadge: {
     initial: { scale: 0, rotate: -180 },
@@ -237,32 +255,69 @@ const AnimatedHeartIcon = React.memo(() => (
   </motion.div>
 ));
 
+AnimatedHeartIcon.displayName = 'AnimatedHeartIcon';
+
 // Animated Clear Button Component
-const AnimatedClearButton = React.memo(({ onClick }) => (
+const AnimatedClearButton = React.memo(({ onClick, itemCount }) => (
   <motion.button
     onClick={onClick}
-    className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium"
-    aria-label="Clear entire wishlist"
+    className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+    aria-label={`Clear entire wishlist with ${itemCount} items`}
+    disabled={itemCount === 0}
     variants={ANIMATION_VARIANTS.clearButton}
     initial="initial"
     animate="animate"
-    whileHover={ANIMATION_VARIANTS.clearButtonHover}
-    whileTap={ANIMATION_VARIANTS.clearButtonTap}
+    whileHover={itemCount > 0 ? ANIMATION_VARIANTS.clearButtonHover : {}}
+    whileTap={itemCount > 0 ? ANIMATION_VARIANTS.clearButtonTap : {}}
   >
     <motion.div
       variants={ANIMATION_VARIANTS.clearButtonIcon}
-      whileHover="hover"
+      whileHover={itemCount > 0 ? "hover" : {}}
     >
       <FiTrash2 />
     </motion.div>
-    Clear All
+    Clear All ({itemCount})
   </motion.button>
 ));
+
+AnimatedClearButton.displayName = 'AnimatedClearButton';
+
+// Share Wishlist Button Component
+const ShareWishlistButton = React.memo(({ itemCount }) => {
+  const handleShare = async () => {
+    try {
+      const wishlistUrl = `${window.location.origin}/wishlist`;
+      await navigator.clipboard.writeText(wishlistUrl);
+      toast.success(TOAST_MESSAGES.WISHLIST_SHARED);
+    } catch (error) {
+      toast.error('Failed to copy link');
+    }
+  };
+
+  if (itemCount === 0) return null;
+
+  return (
+    <motion.button
+      onClick={handleShare}
+      className="flex items-center gap-2 text-polishedGold hover:text-midnight font-medium"
+      aria-label="Share wishlist"
+      variants={ANIMATION_VARIANTS.shareButton}
+      initial="initial"
+      animate="animate"
+      whileHover={ANIMATION_VARIANTS.shareButtonHover}
+      whileTap={ANIMATION_VARIANTS.clearButtonTap}
+    >
+      <FiShare2 />
+      Share
+    </motion.button>
+  );
+});
+
+ShareWishlistButton.displayName = 'ShareWishlistButton';
 
 // Animated Product Item Component
 const AnimatedProductItem = React.memo(({ product, index, onRemove }) => (
   <motion.div
-    key={product.id}
     variants={ANIMATION_VARIANTS.item}
     initial="initial"
     animate="animate"
@@ -298,6 +353,8 @@ const AnimatedProductItem = React.memo(({ product, index, onRemove }) => (
     </motion.div>
   </motion.div>
 ));
+
+AnimatedProductItem.displayName = 'AnimatedProductItem';
 
 // Empty State Component
 const EmptyState = React.memo(() => (
@@ -361,39 +418,33 @@ const EmptyState = React.memo(() => (
   </motion.div>
 ));
 
-const PriceRangeSlider = React.memo(({ priceRange, setPriceRange }) => {
-  const [localRange, setLocalRange] = useState(priceRange);
-  
-  // Debounce price changes
-  useEffect(() => {
-    const timer = setTimeout(() => setPriceRange(localRange), 300);
-    return () => clearTimeout(timer);
-  }, [localRange, setPriceRange]);
+EmptyState.displayName = 'EmptyState';
 
-  return (
-    <div className="space-y-4">
-      {/* Dual range slider implementation */}
-    </div>
-  );
-});
-
+// Main Wishlist Component
 const Wishlist = () => {
   const { items, removeFromWishlist, clearWishlist } = useWishlist();
 
-  const handleRemoveItem = (productId) => {
+  const handleRemoveItem = React.useCallback((productId) => {
     removeFromWishlist(productId);
-    toast.success('Removed from wishlist');
-  };
+    toast.success(TOAST_MESSAGES.ITEM_REMOVED);
+  }, [removeFromWishlist]);
 
-  const handleClearWishlist = () => {
-    if (window.confirm('Are you sure you want to clear your entire wishlist?')) {
+  const handleClearWishlist = React.useCallback(() => {
+    if (window.confirm(`Are you sure you want to clear all ${items.length} items from your wishlist?`)) {
       clearWishlist();
-      toast.success('Wishlist cleared');
+      toast.success(TOAST_MESSAGES.WISHLIST_CLEARED);
     }
-  };
+  }, [clearWishlist, items.length]);
+
+  // Memoize expensive calculations
+  const itemCount = React.useMemo(() => items.length, [items.length]);
+  const totalValue = React.useMemo(() => 
+    items.reduce((sum, item) => sum + (item.price || 0), 0), 
+    [items]
+  );
 
   // Empty state with animations
-  if (items.length === 0) {
+  if (itemCount === 0) {
     return <EmptyState />;
   }
 
@@ -408,7 +459,7 @@ const Wishlist = () => {
         
         {/* Header Section */}
         <motion.div 
-          className="flex items-center justify-between mb-8"
+          className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4"
           variants={ANIMATION_VARIANTS.header}
           initial="initial"
           animate="animate"
@@ -427,25 +478,48 @@ const Wishlist = () => {
               My Wishlist
             </motion.h1>
             
-            <motion.p 
-              className="text-gray-600"
+            <motion.div 
+              className="flex flex-col sm:flex-row sm:items-center gap-2 text-gray-600"
               variants={ANIMATION_VARIANTS.headerSubtitle}
               initial="initial"
               animate="animate"
             >
-              <motion.span
-                key={items.length}
-                variants={ANIMATION_VARIANTS.counter}
-                initial="initial"
-                animate="animate"
-              >
-                {items.length}
-              </motion.span>
-              {' '}item{items.length !== 1 ? 's' : ''} in your wishlist
-            </motion.p>
+              <p>
+                <motion.span
+                  key={itemCount}
+                  variants={ANIMATION_VARIANTS.counter}
+                  initial="initial"
+                  animate="animate"
+                >
+                  {itemCount}
+                </motion.span>
+                {' '}item{itemCount !== 1 ? 's' : ''} in your wishlist
+              </p>
+              
+              {totalValue > 0 && (
+                <span className="hidden sm:inline text-gray-400">•</span>
+              )}
+              
+              {totalValue > 0 && (
+                <motion.p 
+                  className="font-medium text-polishedGold"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  Total: ${totalValue.toFixed(2)}
+                </motion.p>
+              )}
+            </motion.div>
           </motion.div>
 
-          <AnimatedClearButton onClick={handleClearWishlist} />
+          <div className="flex items-center gap-3">
+            <ShareWishlistButton itemCount={itemCount} />
+            <AnimatedClearButton 
+              onClick={handleClearWishlist} 
+              itemCount={itemCount} 
+            />
+          </div>
         </motion.div>
 
         {/* Products Grid */}
@@ -468,22 +542,20 @@ const Wishlist = () => {
         </motion.div>
 
         {/* Footer Message */}
-        {items.length > 0 && (
-          <motion.div
-            className="mt-12 text-center"
-            variants={ANIMATION_VARIANTS.footerMessage}
-            initial="initial"
+        <motion.div
+          className="mt-12 text-center"
+          variants={ANIMATION_VARIANTS.footerMessage}
+          initial="initial"
+          animate="animate"
+        >
+          <motion.p 
+            className="text-gray-500 text-sm"
+            variants={ANIMATION_VARIANTS.footerMessagePulse}
             animate="animate"
           >
-            <motion.p 
-              className="text-gray-500 text-sm"
-              variants={ANIMATION_VARIANTS.footerMessagePulse}
-              animate="animate"
-            >
-              💡 Items in your wishlist are saved for 30 days
-            </motion.p>
-          </motion.div>
-        )}
+            💡 Items in your wishlist are saved for 30 days
+          </motion.p>
+        </motion.div>
       </div>
     </motion.div>
   );
